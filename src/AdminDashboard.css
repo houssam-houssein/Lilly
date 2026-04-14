@@ -1,0 +1,416 @@
+.admin-app {
+  min-height: 100vh;
+  padding: clamp(1rem, 4vw, 2rem);
+  background: #1a1b1e;
+  color: #e8e9ec;
+  font-family: system-ui, sans-serif;
+}
+
+.admin-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #33363d;
+}
+
+.admin-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.admin-subtitle {
+  margin: 0.35rem 0 0;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #9aa0a8;
+}
+
+.admin-subtitle code {
+  font-size: 0.8em;
+  color: #c5c8ce;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+}
+
+.admin-link {
+  color: #8eb4ff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.admin-link:hover {
+  text-decoration: underline;
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.admin-tab {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #444952;
+  border-radius: 6px;
+  background: #23252b;
+  color: #b8bcc4;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.admin-tab:hover {
+  background: #2a2d34;
+  color: #e8e9ec;
+}
+
+.admin-tab--active {
+  background: #3d5a99;
+  border-color: #4a6bb3;
+  color: #fff;
+}
+
+.admin-tab-panel {
+  margin-top: 0.5rem;
+}
+
+.admin-tab-panel--scroll {
+  max-height: min(70vh, 48rem);
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.admin-block {
+  margin-bottom: 1.75rem;
+}
+
+.admin-block-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #c5c8ce;
+}
+
+.admin-btn--mt {
+  margin-top: 0.5rem;
+}
+
+.admin-meal-upgrade {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #33363d;
+  border-radius: 8px;
+  background: #23252b;
+}
+
+.admin-inline-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  color: #9aa0a8;
+}
+
+.admin-inline-input-wide {
+  max-width: 100%;
+  width: min(100%, 28rem);
+}
+
+.admin-salad-card {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #33363d;
+  border-radius: 8px;
+  background: #23252b;
+}
+
+.admin-addon-label {
+  margin: 0.75rem 0 0.35rem;
+  font-size: 0.8125rem;
+  color: #9aa0a8;
+}
+
+.admin-addon-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.admin-addon-row .admin-cell-input:first-child {
+  flex: 1 1 12rem;
+  min-width: 8rem;
+}
+
+.admin-addons-cell {
+  min-width: 18rem;
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid #444952;
+  border-radius: 6px;
+  background: #2a2d34;
+  color: #e8e9ec;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.admin-btn:hover {
+  background: #343842;
+}
+
+.admin-btn--primary {
+  background: #3d5a99;
+  border-color: #4a6bb3;
+}
+
+.admin-btn--primary:hover {
+  background: #4a6bb3;
+}
+
+.admin-btn--danger {
+  border-color: #6b3a3a;
+  color: #f0b4b4;
+}
+
+.admin-btn--danger:hover {
+  background: #3d2525;
+}
+
+.admin-btn--small {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.admin-btn--file {
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-btn--file input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-status {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  color: #9aa0a8;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #33363d;
+  border-radius: 8px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #2d3036;
+}
+
+.admin-table th {
+  background: #23252b;
+  font-weight: 600;
+  color: #b8bcc4;
+  white-space: nowrap;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-cell-input,
+.admin-cell-textarea {
+  width: 100%;
+  min-width: 5rem;
+  box-sizing: border-box;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid #3d4149;
+  border-radius: 4px;
+  background: #121316;
+  color: #e8e9ec;
+  font: inherit;
+}
+
+.admin-cell-input--num {
+  min-width: 4.5rem;
+  max-width: 7rem;
+}
+
+.admin-col-price {
+  width: 8rem;
+  text-align: center;
+}
+
+.admin-price-input {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.admin-side-badge {
+  display: inline-block;
+  min-width: 3.5rem;
+  padding: 0.12rem 0.4rem;
+  border: 1px solid #3d4149;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #b8bcc4;
+  background: #1a1b1e;
+}
+
+.admin-cell-textarea {
+  resize: vertical;
+  min-height: 2.5rem;
+}
+
+.admin-cell-textarea--wide {
+  min-height: 0;
+}
+
+.admin-col-salad-desc {
+  width: 52%;
+}
+
+.admin-pin {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: #1a1b1e;
+  color: #e8e9ec;
+  font-family: system-ui, sans-serif;
+}
+
+.admin-pin-form {
+  width: 100%;
+  max-width: 22rem;
+  padding: 1.5rem;
+  border: 1px solid #33363d;
+  border-radius: 10px;
+  background: #23252b;
+}
+
+.admin-pin-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.admin-pin-hint {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: #9aa0a8;
+}
+
+.admin-pin-hint code {
+  font-size: 0.85em;
+}
+
+.admin-pin-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  color: #b8bcc4;
+}
+
+.admin-pin-input {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #3d4149;
+  border-radius: 6px;
+  background: #121316;
+  color: #e8e9ec;
+  font: inherit;
+}
+
+.admin-pin-error {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: #f0a0a0;
+}
+
+.admin-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.admin-confirm-card {
+  width: min(100%, 24rem);
+  padding: 1rem;
+  border: 1px solid #33363d;
+  border-radius: 10px;
+  background: #23252b;
+}
+
+.admin-confirm-text {
+  margin: 0;
+  color: #e8e9ec;
+  font-size: 0.9rem;
+}
+
+.admin-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.menu-admin-entry {
+  position: fixed;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 20;
+  font-size: 0.75rem;
+}
+
+.menu-admin-entry a {
+  color: rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+}
+
+.menu-admin-entry a:hover {
+  color: rgba(0, 0, 0, 0.55);
+  text-decoration: underline;
+}

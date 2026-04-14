@@ -1,0 +1,238 @@
+/* Page 2: burgundy / maroon card */
+.menu-panel--page2 {
+  --menu-pad-x: clamp(1.25rem, 4vw, 2rem);
+  --menu-pad-b: clamp(1.75rem, 4vw, 2.5rem);
+  --page2-panel-bg: #40191f;
+  --page2-text: #f1ece5;
+  --page2-muted: color-mix(in srgb, var(--page2-text) 70%, var(--page2-panel-bg));
+  --menu-stripe-dark: var(--page2-panel-bg);
+  background: var(--page2-panel-bg);
+  color: var(--page2-text);
+  padding: clamp(1.25rem, 3.5vw, 1.75rem) var(--menu-pad-x) var(--menu-pad-b);
+}
+
+.menu-panel--page2 .menu-line-name,
+.menu-panel--page2 .menu-line-price {
+  color: var(--page2-text);
+}
+
+.menu-panel--page2 .menu-line-desc {
+  color: var(--page2-muted);
+}
+
+.menu-panel--page2 .p2-starters-note {
+  margin-top: 0.65rem;
+  font-size: clamp(0.76rem, 1.7vw, 0.84rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--page2-muted);
+  line-height: 1.45;
+}
+
+.menu-panel--page2 .menu-vat-notice {
+  color: var(--page2-text);
+}
+
+.p2-body {
+  gap: 0;
+}
+
+.p2-section--salads .menu-lines,
+.p2-section--wok .menu-lines,
+.p2-section--bowl .menu-lines,
+.p2-section--rolls .menu-lines,
+.p2-section--pizza .menu-lines,
+.p2-section--burgers .menu-lines,
+.p2-section--tacos .menu-lines {
+  padding: 0;
+}
+
+.p2-section--salads .p2-section-title,
+.p2-section--wok .p2-section-title,
+.p2-section--bowl .p2-section-title,
+.p2-section--rolls .p2-section-title,
+.p2-section--pizza .p2-section-title,
+.p2-section--burgers .p2-section-title,
+.p2-section--tacos .p2-section-title {
+  text-align: left;
+  margin-top: 0;
+}
+
+.p2-salad-entry {
+  display: list-item;
+  list-style: none;
+  margin-bottom: clamp(1.15rem, 2.8vw, 1.65rem);
+}
+
+/* Override global .menu-line--baguette:last-child { margin-bottom: 0 } */
+.p2-section--salads .p2-salad-entry.menu-line--baguette:last-child {
+  margin-bottom: clamp(1.15rem, 2.8vw, 1.65rem);
+}
+
+.p2-salad-entry .menu-line-baguette,
+.p2-section--wok .menu-line-baguette,
+.p2-section--bowl .menu-line-baguette,
+.p2-section--rolls .menu-line-baguette,
+.p2-section--pizza .menu-line-baguette,
+.p2-section--burgers .menu-line-baguette,
+.p2-section--tacos .menu-line-baguette {
+  width: 100%;
+  align-items: flex-start;
+}
+
+.p2-section--salads .menu-line-name,
+.p2-section--wok .menu-line-name,
+.p2-section--bowl .menu-line-name,
+.p2-section--rolls .menu-line-name,
+.p2-section--pizza .menu-line-name,
+.p2-section--burgers .menu-line-name,
+.p2-section--tacos .menu-line-name {
+  display: block;
+  font-size: clamp(0.95rem, 2.2vw, 1.06rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.p2-section--salads .menu-line-price,
+.p2-section--wok .menu-line-price,
+.p2-section--bowl .menu-line-price,
+.p2-section--rolls .menu-line-price,
+.p2-section--pizza .menu-line-price,
+.p2-section--burgers .menu-line-price,
+.p2-section--tacos .menu-line-price {
+  font-size: clamp(0.95rem, 2.2vw, 1.06rem);
+  font-weight: 700;
+  padding-top: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.p2-section--salads .menu-line-desc,
+.p2-section--wok .menu-line-desc,
+.p2-section--bowl .menu-line-desc,
+.p2-section--rolls .menu-line-desc,
+.p2-section--pizza .menu-line-desc,
+.p2-section--burgers .menu-line-desc,
+.p2-section--tacos .menu-line-desc {
+  margin-top: 0.4rem;
+  font-size: clamp(0.8rem, 1.85vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1.55;
+  max-width: 100%;
+}
+
+.p2-section--wok .menu-line--baguette,
+.p2-section--bowl .menu-line--baguette,
+.p2-section--rolls .menu-line--baguette,
+.p2-section--pizza .menu-line--baguette,
+.p2-section--burgers .menu-line--baguette,
+.p2-section--tacos .menu-line--baguette {
+  margin-bottom: clamp(1.15rem, 2.8vw, 1.65rem);
+}
+
+.p2-section--wok .menu-line--baguette:last-child,
+.p2-section--bowl .menu-line--baguette:last-child,
+.p2-section--rolls .menu-line--baguette:last-child,
+.p2-section--pizza .menu-line--baguette:last-child,
+.p2-section--burgers .menu-line--baguette:last-child,
+.p2-section--tacos .menu-line--baguette:last-child {
+  margin-bottom: clamp(1.15rem, 2.8vw, 1.65rem);
+}
+
+.p2-meal-upgrade {
+  margin-top: clamp(1.15rem, 2.8vw, 1.5rem);
+}
+
+.p2-meal-upgrade-label {
+  margin: 0 0 0.4rem;
+  font-size: clamp(0.72rem, 1.65vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--page2-text);
+}
+
+.p2-meal-upgrade-headline {
+  margin: 0 0 0.35rem;
+  font-size: clamp(0.82rem, 1.95vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--page2-text);
+}
+
+.p2-meal-upgrade-sub {
+  margin: 0;
+  font-size: clamp(0.76rem, 1.7vw, 0.84rem);
+  font-weight: 400;
+  color: var(--page2-muted);
+}
+
+.p2-wok-page-title {
+  text-align: left;
+  margin-top: 0;
+}
+
+.p2-salad-addons {
+  margin-top: 0.55rem;
+}
+
+.p2-salad-addons-label {
+  margin: 0 0 0.4rem;
+  font-size: clamp(0.8rem, 1.85vw, 0.9rem);
+  font-weight: 700;
+  color: var(--page2-text);
+}
+
+.p2-salad-addons-list {
+  list-style: disc;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.p2-salad-addon-item {
+  margin-bottom: 0.2rem;
+  font-size: clamp(0.8rem, 1.85vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--page2-text);
+}
+
+.p2-salad-addon-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Same treatment as green card baguette block: VAT + full-bleed stripe at panel bottom */
+.p2-panel-footer {
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.p2-panel-footer .menu-vat-notice {
+  margin-top: 0;
+}
+
+.p2-section {
+  margin-bottom: clamp(1.75rem, 4vw, 2.35rem);
+}
+
+.p2-section:last-of-type {
+  margin-bottom: 0;
+}
+
+.p2-section-title {
+  color: var(--page2-text);
+  margin-bottom: clamp(1rem, 2.5vw, 1.35rem);
+}
+
+.p2-starters-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(2rem, 7vw, 3.5rem);
+  align-items: start;
+}
+
+@media (max-width: 32rem) {
+  .p2-starters-cols {
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+  }
+}
