@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { MenuItem } from './types'
 import { formatPrice } from './formatPrice'
 import { useMenuCatalog, useMenuCatalogContext } from './MenuCatalogContext'
@@ -36,7 +37,7 @@ function minSortOrder(items: MenuItem[]): number {
 const restaurantName = import.meta.env.VITE_RESTAURANT_NAME?.trim() || 'LILY'
 
 /** Green card: LILY + first part of the menu (stacked with burgundy card below). */
-export function MainMenuPanel() {
+export function MainMenuPanel({ headerAddon }: { headerAddon?: ReactNode }) {
   const menu = useMenuCatalog()
 
   const topRowKeys = TOP_ROW_CATEGORY_LABELS.map((label) =>
@@ -58,7 +59,10 @@ export function MainMenuPanel() {
   return (
     <div className="menu-panel menu-panel--main">
       <header className="menu-header">
-        <h1 className="brand">{restaurantName}</h1>
+        <h1 id="menu-brand-title" className="brand">
+          {restaurantName}
+        </h1>
+        {headerAddon}
       </header>
 
       <main className="menu-body">

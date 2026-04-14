@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   BeveragesBlendedIcedPanel,
   BeveragesCoffeeHotPanel,
@@ -23,10 +23,87 @@ function useHashRoute(): string {
   return hash
 }
 
+type PublicCategory = {
+  id: string
+  label: string
+  targetId: string
+}
+
 export function App() {
   const hash = useHashRoute()
   const showAdminEntry =
     import.meta.env.DEV || import.meta.env.VITE_SHOW_ADMIN_LINK === 'true'
+  const categories = useMemo<PublicCategory[]>(
+    () => [
+      { id: 'al-forno', label: 'AL FORNO', targetId: 'panel-main' },
+      { id: 'kaeke', label: 'KAEKE', targetId: 'panel-main' },
+      { id: 'patty-melt', label: 'PATTY MELT', targetId: 'panel-main' },
+      { id: 'baguette', label: 'MULTI-CEREAL BAGUETTE', targetId: 'panel-main' },
+      { id: 'starters', label: 'STARTERS', targetId: 'panel-secondary' },
+      { id: 'sharing', label: 'SHARING', targetId: 'panel-secondary' },
+      { id: 'salads', label: 'SALADS', targetId: 'panel-secondary' },
+      { id: 'wok', label: 'WOK NOODLES', targetId: 'panel-wok-bowl' },
+      { id: 'bowl', label: 'BOWL', targetId: 'panel-wok-bowl' },
+      { id: 'rolls', label: 'SIGNATURE ROLLS', targetId: 'panel-rolls-pizza' },
+      { id: 'pizza', label: 'PIZZA', targetId: 'panel-rolls-pizza' },
+      { id: 'burgers', label: 'BURGERS', targetId: 'panel-burgers-tacos' },
+      { id: 'tacos', label: 'FRENCH TACOS', targetId: 'panel-burgers-tacos' },
+      { id: 'black-coffee', label: 'BLACK COFFEE', targetId: 'panel-coffee-hot' },
+      { id: 'hot', label: 'HOT BEVERAGES', targetId: 'panel-coffee-hot' },
+      { id: 'blended', label: 'BLENDED DRINKS', targetId: 'panel-blended-iced' },
+      { id: 'iced', label: 'ICED BEVERAGES', targetId: 'panel-blended-iced' },
+      { id: 'drinks', label: 'DRINKS', targetId: 'panel-drinks-nargileh' },
+      { id: 'nargileh', label: 'NARGILEH', targetId: 'panel-drinks-nargileh' },
+    ],
+    []
+  )
+  const [activeTarget, setActiveTarget] = useState('panel-main')
+  const [navPinned, setNavPinned] = useState(false)
+
+  const grouped = new Map<string, PublicCategory[]>()
+  for (const item of categories) {
+    const list = grouped.get(item.targetId)
+    if (list) list.push(item)
+    else grouped.set(item.targetId, [item])
+  }
+
+  const firstCategoryForTarget = (targetId: string) =>
+    grouped.get(targetId)?.[0]?.id ?? ''
+
+  useEffect(() => {
+    const targets = [...grouped.keys()]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el))
+    if (targets.length === 0) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+        if (visible.length > 0) {
+          setActiveTarget(visible[0].target.id)
+        }
+      },
+      {
+        rootMargin: '-30% 0px -55% 0px',
+        threshold: [0.2, 0.45, 0.7],
+      }
+    )
+    for (const target of targets) observer.observe(target)
+    return () => observer.disconnect()
+  }, [categories])
+
+  useEffect(() => {
+    const onScroll = () => {
+      const title = document.getElementById('menu-brand-title')
+      if (!title) return
+      const rect = title.getBoundingClientRect()
+      setNavPinned(rect.bottom <= 0)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   if (hash === '#/admin') {
     return <AdminDashboard />
@@ -34,28 +111,54 @@ export function App() {
 
   return (
     <div className="menu-page menu-page--stacked">
-      <div className="menu-page-inner">
-        <MainMenuPanel />
+      <div id="panel-main" className="menu-page-inner">
+        <MainMenuPanel
+          headerAddon={
+            <nav
+              className={`menu-jump-nav${navPinned ? ' menu-jump-nav--pinned' : ''}`}
+              aria-label="Menu categories"
+            >
+              {categories.map((cat) => {
+                const activeId = firstCategoryForTarget(activeTarget)
+                const isActive = cat.id === activeId
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    className={`menu-jump-chip${isActive ? ' menu-jump-chip--active' : ''}`}
+                    onClick={() => {
+                      const target = document.getElementById(cat.targetId)
+                      if (!target) return
+                      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }}
+                  >
+                    {cat.label}
+                  </button>
+                )
+              })}
+            </nav>
+          }
+        />
       </div>
-      <div className="menu-page-inner menu-page-inner--spaced">
+      <div id="panel-secondary" className="menu-page-inner menu-page-inner--spaced">
         <SecondaryMenuPanel />
       </div>
-      <div className="menu-page-inner menu-page-inner--spaced">
+      <div id="panel-wok-bowl" className="menu-page-inner menu-page-inner--spaced">
         <WokNoodlesMenuPanel />
       </div>
-      <div className="menu-page-inner menu-page-inner--spaced">
+      <div id="panel-rolls-pizza" className="menu-page-inner menu-page-inner--spaced">
         <SignatureRollsPizzaMenuPanel />
       </div>
-      <div className="menu-page-inner menu-page-inner--spaced">
+      <div id="panel-burgers-tacos" className="menu-page-inner menu-page-inner--spaced">
         <BurgersFrenchTacosMenuPanel />
       </div>
-      <div className="menu-page-inner menu-page-inner--spaced">
+      <div id="panel-coffee-hot" className="menu-page-inner menu-page-inner--spaced">
         <BeveragesCoffeeHotPanel />
       </div>
-      <div className="menu-page-inner menu-page-inner--spaced">
+      <div id="panel-blended-iced" className="menu-page-inner menu-page-inner--spaced">
         <BeveragesBlendedIcedPanel />
       </div>
-      <div className="menu-page-inner menu-page-inner--spaced">
+      <div id="panel-drinks-nargileh" className="menu-page-inner menu-page-inner--spaced">
         <BeveragesDrinksNargilehPanel />
       </div>
       {showAdminEntry ? (
