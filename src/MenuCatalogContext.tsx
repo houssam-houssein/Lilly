@@ -2,18 +2,28 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
 import type { BeveragesCatalog, FullMenuCatalog, Page2Catalog } from './fullMenuCatalog'
 import { defaultFullMenuCatalog } from './fullMenuCatalog'
 import {
+  isFirebaseMenuConfigured,
+  saveMenuCatalogToCloud,
+  subscribeMenuCatalog,
+} from './firebaseMenu'
+import {
   clearFullMenuStorage,
   loadFullMenuFromStorage,
   saveFullMenuToStorage,
 } from './menuCatalogStorage'
 import type { MenuItem } from './types'
+
+const CLOUD_SAVE_DEBOUNCE_MS = 2000
 
 function groupByCategory(items: MenuItem[]): Map<string, MenuItem[]> {
   const map = new Map<string, MenuItem[]>()
@@ -45,15 +55,59 @@ export type MenuCatalogContextValue = {
   ) => void
   setFullCatalog: (catalog: FullMenuCatalog) => void
   resetAllToDefaults: () => void
+  /** Flush localStorage immediately; if Firebase is configured, upload now (throws on failure in strict mode). */
+  saveChangesNow: () => Promise<void>
 }
 
 const MenuCatalogContext = createContext<MenuCatalogContextValue | null>(null)
 
 export function MenuCatalogProvider({ children }: { children: ReactNode }) {
   const [catalog, setCatalogState] = useState<FullMenuCatalog>(getInitialCatalog)
+  const catalogRef = useRef(catalog)
+  const cloudTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const persist = useCallback((next: FullMenuCatalog) => {
-    saveFullMenuToStorage(next)
+  useLayoutEffect(() => {
+    catalogRef.current = catalog
+  }, [catalog])
+
+  const scheduleCloudSave = useCallback((next: FullMenuCatalog) => {
+    if (!isFirebaseMenuConfigured()) return
+    if (cloudTimerRef.current) clearTimeout(cloudTimerRef.current)
+    cloudTimerRef.current = setTimeout(() => {
+      cloudTimerRef.current = null
+      void saveMenuCatalogToCloud(next).catch((err) => {
+        console.warn('[Lily] Firebase sync failed', err)
+      })
+    }, CLOUD_SAVE_DEBOUNCE_MS)
+  }, [])
+
+  useEffect(() => {
+    if (!isFirebaseMenuConfigured()) return
+    return subscribeMenuCatalog(
+      (remote) => {
+        setCatalogState(remote)
+        saveFullMenuToStorage(remote)
+      },
+      (err) => console.warn('[Lily] Firebase listener', err)
+    )
+  }, [])
+
+  const persist = useCallback(
+    (next: FullMenuCatalog) => {
+      saveFullMenuToStorage(next)
+      scheduleCloudSave(next)
+    },
+    [scheduleCloudSave]
+  )
+
+  const saveChangesNow = useCallback(async () => {
+    const snap = catalogRef.current
+    saveFullMenuToStorage(snap)
+    if (cloudTimerRef.current) {
+      clearTimeout(cloudTimerRef.current)
+      cloudTimerRef.current = null
+    }
+    await saveMenuCatalogToCloud(snap, { strict: true })
   }, [])
 
   const updateCatalog = useCallback(
@@ -113,7 +167,9 @@ export function MenuCatalogProvider({ children }: { children: ReactNode }) {
     clearFullMenuStorage()
     const next = defaultFullMenuCatalog()
     setCatalogState(next)
-  }, [])
+    saveFullMenuToStorage(next)
+    scheduleCloudSave(next)
+  }, [scheduleCloudSave])
 
   const greenByCategory = useMemo(
     () => groupByCategory(catalog.greenMenu),
@@ -129,6 +185,7 @@ export function MenuCatalogProvider({ children }: { children: ReactNode }) {
       setBeverages,
       setFullCatalog,
       resetAllToDefaults,
+      saveChangesNow,
     }),
     [
       catalog,
@@ -138,6 +195,7 @@ export function MenuCatalogProvider({ children }: { children: ReactNode }) {
       setBeverages,
       setFullCatalog,
       resetAllToDefaults,
+      saveChangesNow,
     ]
   )
 

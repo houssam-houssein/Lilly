@@ -58,6 +58,12 @@ body {
   margin: 0 auto;
 }
 
+.menu-page [id^='cat-'],
+.menu-page [id^='p2-'],
+.menu-page [id^='bev-'] {
+  scroll-margin-top: 4.5rem;
+}
+
 .menu-jump-nav {
   display: flex;
   gap: 0.5rem;
@@ -65,7 +71,7 @@ body {
   -webkit-overflow-scrolling: touch;
   padding: 0.55rem 0.1rem 0.2rem;
   margin-top: 0.35rem;
-  background: var(--lily-panel-bg);
+  background: transparent;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -79,9 +85,9 @@ body {
   z-index: 40;
   padding: 0.45rem 0.6rem;
   margin-top: 0;
-  background: color-mix(in srgb, var(--lily-panel-bg) 92%, black 8%);
+  background: transparent;
   border-radius: 0 0 10px 10px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
 }
 
 .menu-jump-nav::-webkit-scrollbar {

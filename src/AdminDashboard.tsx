@@ -7,6 +7,10 @@ import {
 } from 'react'
 import type { BeverageRow } from './beveragesMenuData'
 import type { DescLine, SaladLine, SimpleLine } from './menuPage2Data'
+import {
+  ensureFirebaseWriteSession,
+  isFirebaseMenuConfigured,
+} from './firebaseMenu'
 import { useMenuCatalogContext } from './MenuCatalogContext'
 import type { MenuItem } from './types'
 import './AdminDashboard.css'
@@ -44,6 +48,9 @@ function PinGate({ children }: { children: ReactNode }) {
             sessionStorage.setItem(ADMIN_SESSION_KEY, '1')
             setUnlocked(true)
             setError(false)
+            void ensureFirebaseWriteSession().catch(() => {
+              /* Firebase optional; menu still saves locally */
+            })
           } else {
             setError(true)
           }
@@ -717,8 +724,11 @@ function AdminBevSection({
 }
 
 export function AdminDashboard() {
-  const { catalog, setGreenMenu, setPage2, setBeverages } = useMenuCatalogContext()
+  const { catalog, setGreenMenu, setPage2, setBeverages, saveChangesNow } =
+    useMenuCatalogContext()
   const [tab, setTab] = useState<AdminTab>('')
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'ok' | 'err'>('idle')
+  const [saveMessage, setSaveMessage] = useState<string | null>(null)
   const [pendingDelete, setPendingDelete] = useState<{
     message: string
     onConfirm: () => void
@@ -802,6 +812,33 @@ export function AdminDashboard() {
     ? sortedGreen.filter((row) => row.category === selectedGreenCategory)
     : []
 
+  const handleSaveChanges = useCallback(async () => {
+    setSaveMessage(null)
+    setSaveState('saving')
+    try {
+      await saveChangesNow()
+      setSaveState('ok')
+      setSaveMessage(
+        isFirebaseMenuConfigured()
+          ? 'Saved to this device and online.'
+          : 'Saved to this device. Add Firebase in .env to sync online.'
+      )
+      window.setTimeout(() => {
+        setSaveState('idle')
+        setSaveMessage(null)
+      }, 4000)
+    } catch (e) {
+      setSaveState('err')
+      setSaveMessage(
+        e instanceof Error ? e.message : 'Save failed. Your edits are still in this browser.'
+      )
+      window.setTimeout(() => {
+        setSaveState('idle')
+        setSaveMessage(null)
+      }, 7000)
+    }
+  }, [saveChangesNow])
+
   const addGreenItem = useCallback(() => {
     if (!selectedGreenCategory) return
     setGreenMenu((prev) => {
@@ -827,9 +864,17 @@ export function AdminDashboard() {
           <div>
             <h1 className="admin-title">Admin Dashboard</h1>
           </div>
-          <nav className="admin-nav">
+          <nav className="admin-nav" aria-label="Dashboard actions">
+            <button
+              type="button"
+              className="admin-btn admin-btn--primary admin-btn--save-header"
+              disabled={saveState === 'saving'}
+              onClick={() => void handleSaveChanges()}
+            >
+              {saveState === 'saving' ? 'Saving…' : 'Save changes'}
+            </button>
             <a
-              className="admin-link"
+              className="admin-link admin-nav-exit"
               href="#/"
               onClick={() => {
                 sessionStorage.removeItem(ADMIN_SESSION_KEY)
@@ -837,6 +882,14 @@ export function AdminDashboard() {
             >
               ← Exit Dashboard
             </a>
+            {saveMessage ? (
+              <span
+                className={`admin-save-hint${saveState === 'err' ? ' admin-save-hint--err' : ''}`}
+                role="status"
+              >
+                {saveMessage}
+              </span>
+            ) : null}
           </nav>
         </header>
 

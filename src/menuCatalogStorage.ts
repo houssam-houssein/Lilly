@@ -42,6 +42,12 @@ export function parseFullMenuJson(text: string): FullMenuCatalog | null {
   }
 }
 
+/** Parse catalog JSON from Firestore or import; returns null if shape is invalid. */
+export function parseFullMenuRemote(raw: unknown): FullMenuCatalog | null {
+  if (!raw || typeof raw !== 'object') return null
+  return normalizeFullCatalog(raw as Record<string, unknown>)
+}
+
 function normalizeFullCatalog(raw: Record<string, unknown>): FullMenuCatalog {
   const defaults = defaultFullMenuCatalog()
   const greenMenu = Array.isArray(raw.greenMenu)
