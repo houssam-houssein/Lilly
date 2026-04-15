@@ -119,6 +119,23 @@ export type SaveMenuCatalogCloudOptions = {
   strict?: boolean
 }
 
+function stripUndefined(value: unknown): unknown {
+  if (value === undefined) return null
+  if (Array.isArray(value)) {
+    return value.map((item) => stripUndefined(item))
+  }
+  if (value && typeof value === 'object') {
+    const src = value as Record<string, unknown>
+    const out: Record<string, unknown> = {}
+    for (const [key, entry] of Object.entries(src)) {
+      const next = stripUndefined(entry)
+      if (next !== undefined) out[key] = next
+    }
+    return out
+  }
+  return value
+}
+
 export async function saveMenuCatalogToCloud(
   catalog: FullMenuCatalog,
   options?: SaveMenuCatalogCloudOptions
@@ -135,8 +152,9 @@ export async function saveMenuCatalogToCloud(
   }
   const db = getFirestore(getFirebaseApp())
   const ref = doc(db, COLLECTION, DOC_ID)
+  const safeCatalog = stripUndefined(catalog)
   await setDoc(ref, {
-    catalog,
+    catalog: safeCatalog,
     updatedAt: serverTimestamp(),
   })
 }
