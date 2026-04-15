@@ -9,7 +9,6 @@ import type { BeverageRow } from './beveragesMenuData'
 import type { DescLine, SaladLine, SimpleLine } from './menuPage2Data'
 import {
   ensureFirebaseWriteSession,
-  isFirebaseMenuConfigured,
 } from './firebaseMenu'
 import { useMenuCatalogContext } from './MenuCatalogContext'
 import type { MenuItem } from './types'
@@ -830,11 +829,7 @@ export function AdminDashboard() {
         }),
       ])
       setSaveState('ok')
-      setSaveMessage(
-        isFirebaseMenuConfigured()
-          ? 'Saved to this device and online.'
-          : 'Saved to this device. Add Firebase in .env to sync online.'
-      )
+      setSaveMessage('Saved successfully.')
       window.setTimeout(() => {
         setSaveState('idle')
         setSaveMessage(null)
