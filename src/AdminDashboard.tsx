@@ -16,6 +16,7 @@ import type { MenuItem } from './types'
 import './AdminDashboard.css'
 
 const ADMIN_SESSION_KEY = 'lily-admin-session-v1'
+const SAVE_TIMEOUT_MS = 15000
 
 function PinGate({ children }: { children: ReactNode }) {
   const configuredUser = import.meta.env.VITE_ADMIN_USERNAME?.trim()
@@ -816,7 +817,18 @@ export function AdminDashboard() {
     setSaveMessage(null)
     setSaveState('saving')
     try {
-      await saveChangesNow()
+      await Promise.race([
+        saveChangesNow(),
+        new Promise<never>((_, reject) => {
+          window.setTimeout(() => {
+            reject(
+              new Error(
+                'Save timed out. Check Firebase Auth authorized domains and Firestore rules, then try again.'
+              )
+            )
+          }, SAVE_TIMEOUT_MS)
+        }),
+      ])
       setSaveState('ok')
       setSaveMessage(
         isFirebaseMenuConfigured()
