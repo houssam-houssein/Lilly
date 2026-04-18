@@ -61,4 +61,7 @@ export const MENU_ITEMS: MenuItem[] = [
     description: 'Halloumi, cucumber, tomato, pesto sauce in multi-cereal baguette',
     sortOrder: 120,
   },
+  // TEA
+  { id: 'tea-black', name: 'Black Tea', price: 50_000, category: 'TEA', description: '', sortOrder: 130 },
+  { id: 'tea-green', name: 'Green Tea', price: 50_000, category: 'TEA', description: '', sortOrder: 140 },
 ]

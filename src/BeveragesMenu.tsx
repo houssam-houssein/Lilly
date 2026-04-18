@@ -1,5 +1,6 @@
 import { formatPrice } from './formatPrice'
 import type { BeverageRow, BevSimpleLine } from './beveragesMenuData'
+import { TeaCategorySection } from './Menu'
 import { useMenuCatalogContext } from './MenuCatalogContext'
 import './BeveragesMenu.css'
 
@@ -144,6 +145,9 @@ export function BeveragesBlendedIcedPanel() {
   return (
     <div className="menu-panel menu-panel--main">
       <main className="menu-body bev-body">
+        <div className="bev-tea-wrap">
+          <TeaCategorySection />
+        </div>
         <BeverageSection
           sectionId="bev-blended"
           title="Blended drinks"

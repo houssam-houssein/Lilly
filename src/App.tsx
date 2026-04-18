@@ -54,6 +54,7 @@ export function App() {
       { id: 'tacos', label: 'FRENCH TACOS', targetId: 'p2-french-tacos' },
       { id: 'black-coffee', label: 'BLACK COFFEE', targetId: 'bev-black-coffee' },
       { id: 'hot', label: 'HOT BEVERAGES', targetId: 'bev-hot' },
+      { id: 'tea', label: 'TEA', targetId: 'cat-TEA' },
       { id: 'blended', label: 'BLENDED DRINKS', targetId: 'bev-blended' },
       { id: 'iced', label: 'ICED BEVERAGES', targetId: 'bev-iced' },
       { id: 'drinks', label: 'DRINKS', targetId: 'bev-drinks' },

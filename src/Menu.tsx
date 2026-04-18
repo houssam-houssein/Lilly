@@ -7,6 +7,8 @@ import { useMenuCatalog, useMenuCatalogContext } from './MenuCatalogContext'
 const TOP_ROW_CATEGORY_LABELS = ['AL FORNO', 'KAEKE'] as const
 
 const BAGUETTE_CATEGORY = 'MULTI-CEREAL BAGUETTE'
+/** Rendered with beverages (before blended); kept out of the first green card. */
+const TEA_CATEGORY = 'TEA'
 
 function isBaguetteCategory(categoryKey: string) {
   return categoryKey.trim().toUpperCase() === BAGUETTE_CATEGORY
@@ -46,7 +48,10 @@ export function MainMenuPanel({ headerAddon }: { headerAddon?: ReactNode }) {
 
   const topKeySet = new Set(topRowKeys)
   const otherKeys = [...menu.byCategory.keys()]
-    .filter((k) => !topKeySet.has(k))
+    .filter(
+      (k) =>
+        !topKeySet.has(k) && k.trim().toUpperCase() !== TEA_CATEGORY
+    )
     .sort((a, b) => {
       const da = menu.byCategory.get(a) ?? []
       const db = menu.byCategory.get(b) ?? []
@@ -96,6 +101,18 @@ type CategoryBlockProps = {
   categoryKey: string
   items: MenuItem[]
   variant: 'compact' | 'full' | 'baguette'
+}
+
+/** TEA block: same styling as other full categories; placed before blended drinks on the page. */
+export function TeaCategorySection() {
+  const menu = useMenuCatalog()
+  const key = [...menu.byCategory.keys()].find(
+    (k) => k.trim().toUpperCase() === TEA_CATEGORY
+  )
+  if (!key) return null
+  const items = menu.byCategory.get(key) ?? []
+  if (items.length === 0) return null
+  return <CategoryBlock categoryKey={key} items={items} variant="full" />
 }
 
 function CategoryBlock({ categoryKey, items, variant }: CategoryBlockProps) {

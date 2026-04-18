@@ -48,11 +48,32 @@ export function parseFullMenuRemote(raw: unknown): FullMenuCatalog | null {
   return normalizeFullCatalog(raw as Record<string, unknown>)
 }
 
+/** Append default menu rows whose `id` is missing (new app versions ship extra categories/items). */
+function mergeMissingGreenItemsFromDefaults(stored: MenuItem[]): MenuItem[] {
+  const defaults = defaultFullMenuCatalog().greenMenu
+  const ids = new Set(stored.map((i) => i.id))
+  const merged: MenuItem[] = [...stored]
+  for (const item of defaults) {
+    if (!ids.has(item.id)) {
+      merged.push({ ...item })
+      ids.add(item.id)
+    }
+  }
+  merged.sort((a, b) => {
+    const oa = a.sortOrder ?? 0
+    const ob = b.sortOrder ?? 0
+    if (oa !== ob) return oa - ob
+    return a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+  })
+  return merged
+}
+
 function normalizeFullCatalog(raw: Record<string, unknown>): FullMenuCatalog {
   const defaults = defaultFullMenuCatalog()
-  const greenMenu = Array.isArray(raw.greenMenu)
+  const greenMenuRaw = Array.isArray(raw.greenMenu)
     ? (raw.greenMenu as MenuItem[])
     : defaults.greenMenu
+  const greenMenu = mergeMissingGreenItemsFromDefaults(greenMenuRaw)
   const page2 =
     raw.page2 && typeof raw.page2 === 'object'
       ? {
