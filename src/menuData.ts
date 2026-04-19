@@ -2,36 +2,38 @@ import type { MenuItem } from './types'
 
 /** Local menu content — replace or load from an API later. */
 export const MENU_ITEMS: MenuItem[] = [
-  // AL FORNO
-  { id: 'alforno-zaatar', name: 'Zaatar', price: 110_000, category: 'AL FORNO', description: '', sortOrder: 10 },
-  { id: 'alforno-cheese', name: 'Cheese', price: 220_000, category: 'AL FORNO', description: '', sortOrder: 20 },
-  { id: 'alforno-cocktail', name: 'Cocktail', price: 240_000, category: 'AL FORNO', description: '', sortOrder: 30 },
-  { id: 'alforno-turkey-cheese', name: 'Turkey & Cheese', price: 300_000, category: 'AL FORNO', description: '', sortOrder: 40 },
-  { id: 'alforno-labneh', name: 'Labneh', price: 220_000, category: 'AL FORNO', description: '', sortOrder: 50 },
-  { id: 'alforno-labneh-zaatar', name: 'Labneh & Zaatar', price: 240_000, category: 'AL FORNO', description: '', sortOrder: 60 },
-  { id: 'alforno-duplex', name: 'Duplex', price: 430_000, category: 'AL FORNO', description: '', sortOrder: 70 },
-  { id: 'alforno-lahmeh', name: 'Lahmeh', price: 480_000, category: 'AL FORNO', description: '', sortOrder: 80 },
+  // MANAKISH
+  { id: 'alforno-zaatar', name: 'Zaatar', price: 110_000, category: 'MANAKISH', description: '', sortOrder: 10 },
+  { id: 'alforno-cheese', name: 'Cheese', price: 220_000, category: 'MANAKISH', description: '', sortOrder: 20 },
+  { id: 'alforno-cocktail', name: 'Cocktail', price: 240_000, category: 'MANAKISH', description: '', sortOrder: 30 },
+  { id: 'alforno-turkey-cheese', name: 'Turkey & Cheese', price: 300_000, category: 'MANAKISH', description: '', sortOrder: 40 },
+  { id: 'alforno-labneh', name: 'Labneh', price: 220_000, category: 'MANAKISH', description: '', sortOrder: 50 },
+  { id: 'alforno-labneh-zaatar', name: 'Labneh & Zaatar', price: 240_000, category: 'MANAKISH', description: '', sortOrder: 60 },
+  { id: 'alforno-duplex', name: 'Duplex', price: 430_000, category: 'MANAKISH', description: '', sortOrder: 70 },
+  { id: 'alforno-lahmeh', name: 'Lahmeh', price: 480_000, category: 'MANAKISH', description: '', sortOrder: 80 },
   {
     id: 'alforno-nutella',
     name: 'Nutella',
     price: 350_000,
-    category: 'AL FORNO',
+    category: 'MANAKISH',
     description: '',
     sortOrder: 90,
-    categoryFooter: 'served as manakish or saj',
   },
+  // SAJ
+  { id: 'saj-zaatar', name: 'Zaatar', price: 110_000, category: 'SAJ', description: '', sortOrder: 10 },
+  { id: 'saj-cheese', name: 'Cheese', price: 220_000, category: 'SAJ', description: '', sortOrder: 20 },
   // KAEKE
   { id: 'kaeke-cheese', name: 'Cheese', price: 220_000, category: 'KAEKE', description: '', sortOrder: 10 },
   { id: 'kaeke-turkey-cheese', name: 'Turkey & Cheese', price: 300_000, category: 'KAEKE', description: '', sortOrder: 20 },
   { id: 'kaeke-three-cheese', name: 'Three Cheese', price: 300_000, category: 'KAEKE', description: '', sortOrder: 30 },
   { id: 'kaeke-pepperoni', name: 'Pepperoni Cheese', price: 350_000, category: 'KAEKE', description: '', sortOrder: 40 },
   { id: 'kaeke-cheddar-chitos', name: 'Cheddar Chitos', price: 350_000, category: 'KAEKE', description: '', sortOrder: 50 },
-  // PATTY MELT
+  // EGG
   {
     id: 'patty-lily-cheese',
     name: 'Lily Cheese',
     price: 450_000,
-    category: 'PATTY MELT',
+    category: 'EGG',
     description: 'Mozzarella cheese, cheddar cheese, mayo in a soft toasted bun.',
     sortOrder: 10,
   },

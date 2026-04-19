@@ -3,8 +3,9 @@ import type { MenuItem } from './types'
 import { formatPrice } from './formatPrice'
 import { useMenuCatalog, useMenuCatalogContext } from './MenuCatalogContext'
 
-/** Categories shown side-by-side at the top (match `category` on items, case-insensitive). */
-const TOP_ROW_CATEGORY_LABELS = ['AL FORNO', 'KAEKE'] as const
+/** Top row: MANAKISH | SAJ; row below: KAEKE (match `category` on items, case-insensitive). */
+const TOP_PAIR_CATEGORY_LABELS = ['MANAKISH', 'SAJ'] as const
+const TOP_BELOW_CATEGORY_LABELS = ['KAEKE'] as const
 
 const BAGUETTE_CATEGORY = 'MULTI-CEREAL BAGUETTE'
 /** Rendered with beverages (before blended); kept out of the first green card. */
@@ -42,11 +43,15 @@ const restaurantName = import.meta.env.VITE_RESTAURANT_NAME?.trim() || 'LILY'
 export function MainMenuPanel({ headerAddon }: { headerAddon?: ReactNode }) {
   const menu = useMenuCatalog()
 
-  const topRowKeys = TOP_ROW_CATEGORY_LABELS.map((label) =>
+  const pairKeys = TOP_PAIR_CATEGORY_LABELS.map((label) =>
     categoryKeyForLabel(menu.byCategory, label)
   ).filter((k): k is string => k !== undefined)
 
-  const topKeySet = new Set(topRowKeys)
+  const belowKeys = TOP_BELOW_CATEGORY_LABELS.map((label) =>
+    categoryKeyForLabel(menu.byCategory, label)
+  ).filter((k): k is string => k !== undefined)
+
+  const topKeySet = new Set([...pairKeys, ...belowKeys])
   const otherKeys = [...menu.byCategory.keys()]
     .filter(
       (k) =>
@@ -71,9 +76,21 @@ export function MainMenuPanel({ headerAddon }: { headerAddon?: ReactNode }) {
       </header>
 
       <main className="menu-body">
-        {topRowKeys.length > 0 ? (
-          <div className="menu-top-columns">
-            {topRowKeys.map((categoryKey) => (
+        {pairKeys.length > 0 ? (
+          <div className="menu-top-columns menu-top-columns--pair">
+            {pairKeys.map((categoryKey) => (
+              <CategoryBlock
+                key={categoryKey}
+                categoryKey={categoryKey}
+                items={menu.byCategory.get(categoryKey) ?? []}
+                variant="compact"
+              />
+            ))}
+          </div>
+        ) : null}
+        {belowKeys.length > 0 ? (
+          <div className="menu-top-kaeke">
+            {belowKeys.map((categoryKey) => (
               <CategoryBlock
                 key={categoryKey}
                 categoryKey={categoryKey}

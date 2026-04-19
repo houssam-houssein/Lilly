@@ -1,6 +1,6 @@
 :root {
   --page-bg: #e5e5e5;
-  /* Primary menu card (AL FORNO, KAEKE, PATTY MELT, logo) */
+  /* Primary menu card (MANAKISH, SAJ, KAEKE, EGG, logo) */
   --lily-panel-bg: #0b2d1e;
   --lily-text: #f1efe7;
   --lily-muted: color-mix(in srgb, var(--lily-text) 70%, var(--lily-panel-bg));
@@ -162,6 +162,14 @@ body {
   align-items: start;
   margin-bottom: clamp(2rem, 4vw, 2.75rem);
   padding-bottom: 0;
+}
+
+.menu-top-columns--pair {
+  margin-bottom: clamp(1.5rem, 3.5vw, 2.25rem);
+}
+
+.menu-top-kaeke {
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
 }
 
 @media (max-width: 32rem) {

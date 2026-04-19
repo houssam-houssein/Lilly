@@ -22,8 +22,11 @@ export function loadFullMenuFromStorage(): FullMenuCatalog | null {
       const parsed = JSON.parse(legacy) as unknown
       if (Array.isArray(parsed) && parsed.length > 0) {
         const base = defaultFullMenuCatalog()
-        base.greenMenu = parsed as MenuItem[]
-        return base
+        return normalizeFullCatalog({
+          greenMenu: parsed as MenuItem[],
+          page2: base.page2,
+          beverages: base.beverages,
+        })
       }
     }
   } catch {
@@ -68,12 +71,28 @@ function mergeMissingGreenItemsFromDefaults(stored: MenuItem[]): MenuItem[] {
   return merged
 }
 
+/** Map legacy saved category labels to current names (localStorage / Firestore). */
+const LEGACY_GREEN_CATEGORY_RENAME: Record<string, string> = {
+  'AL FORNO': 'MANAKISH',
+  'PATTY MELT': 'EGG',
+}
+
+function renameLegacyGreenCategories(items: MenuItem[]): MenuItem[] {
+  return items.map((item) => {
+    const next = LEGACY_GREEN_CATEGORY_RENAME[item.category]
+    if (!next) return item
+    return { ...item, category: next }
+  })
+}
+
 function normalizeFullCatalog(raw: Record<string, unknown>): FullMenuCatalog {
   const defaults = defaultFullMenuCatalog()
   const greenMenuRaw = Array.isArray(raw.greenMenu)
     ? (raw.greenMenu as MenuItem[])
     : defaults.greenMenu
-  const greenMenu = mergeMissingGreenItemsFromDefaults(greenMenuRaw)
+  const greenMenu = renameLegacyGreenCategories(
+    mergeMissingGreenItemsFromDefaults(greenMenuRaw)
+  )
   const page2 =
     raw.page2 && typeof raw.page2 === 'object'
       ? {

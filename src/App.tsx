@@ -35,9 +35,10 @@ export function App() {
     import.meta.env.DEV || import.meta.env.VITE_SHOW_ADMIN_LINK === 'true'
   const categories = useMemo<PublicCategory[]>(
     () => [
-      { id: 'al-forno', label: 'AL FORNO', targetId: 'cat-AL-FORNO' },
+      { id: 'manakish', label: 'MANAKISH', targetId: 'cat-MANAKISH' },
+      { id: 'saj', label: 'SAJ', targetId: 'cat-SAJ' },
       { id: 'kaeke', label: 'KAEKE', targetId: 'cat-KAEKE' },
-      { id: 'patty-melt', label: 'PATTY MELT', targetId: 'cat-PATTY-MELT' },
+      { id: 'egg', label: 'EGG', targetId: 'cat-EGG' },
       {
         id: 'baguette',
         label: 'MULTI-CEREAL BAGUETTE',
