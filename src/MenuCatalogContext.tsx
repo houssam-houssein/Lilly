@@ -123,10 +123,22 @@ export function MenuCatalogProvider({ children }: { children: ReactNode }) {
 
   const setGreenMenu = useCallback(
     (updater: MenuItem[] | ((prev: MenuItem[]) => MenuItem[])) => {
-      updateCatalog((c) => ({
-        ...c,
-        greenMenu: typeof updater === 'function' ? updater(c.greenMenu) : updater,
-      }))
+      updateCatalog((c) => {
+        const prevGreen = c.greenMenu
+        const nextGreen =
+          typeof updater === 'function' ? updater(prevGreen) : updater
+        const prevIds = new Set(prevGreen.map((i) => i.id))
+        const nextIds = new Set(nextGreen.map((i) => i.id))
+        const removed = new Set(c.removedGreenItemIds ?? [])
+        for (const id of prevIds) {
+          if (!nextIds.has(id)) removed.add(id)
+        }
+        return {
+          ...c,
+          greenMenu: nextGreen,
+          removedGreenItemIds: [...removed],
+        }
+      })
     },
     [updateCatalog]
   )

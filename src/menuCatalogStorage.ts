@@ -51,16 +51,18 @@ export function parseFullMenuRemote(raw: unknown): FullMenuCatalog | null {
   return normalizeFullCatalog(raw as Record<string, unknown>)
 }
 
-/** Append default menu rows whose `id` is missing (new app versions ship extra categories/items). */
-function mergeMissingGreenItemsFromDefaults(stored: MenuItem[]): MenuItem[] {
+/** Append default menu rows whose `id` is missing, unless the user removed that default row. */
+function mergeMissingGreenItemsFromDefaults(
+  stored: MenuItem[],
+  userRemovedDefaultIds: ReadonlySet<string>
+): MenuItem[] {
   const defaults = defaultFullMenuCatalog().greenMenu
   const ids = new Set(stored.map((i) => i.id))
   const merged: MenuItem[] = [...stored]
   for (const item of defaults) {
-    if (!ids.has(item.id)) {
-      merged.push({ ...item })
-      ids.add(item.id)
-    }
+    if (ids.has(item.id) || userRemovedDefaultIds.has(item.id)) continue
+    merged.push({ ...item })
+    ids.add(item.id)
   }
   merged.sort((a, b) => {
     const oa = a.sortOrder ?? 0
@@ -90,8 +92,12 @@ function normalizeFullCatalog(raw: Record<string, unknown>): FullMenuCatalog {
   const greenMenuRaw = Array.isArray(raw.greenMenu)
     ? (raw.greenMenu as MenuItem[])
     : defaults.greenMenu
+  const removedGreenItemIds = Array.isArray(raw.removedGreenItemIds)
+    ? (raw.removedGreenItemIds as string[])
+    : []
+  const removedSet = new Set(removedGreenItemIds)
   const greenMenu = renameLegacyGreenCategories(
-    mergeMissingGreenItemsFromDefaults(greenMenuRaw)
+    mergeMissingGreenItemsFromDefaults(greenMenuRaw, removedSet)
   )
   const page2 =
     raw.page2 && typeof raw.page2 === 'object'
@@ -107,7 +113,12 @@ function normalizeFullCatalog(raw: Record<string, unknown>): FullMenuCatalog {
           ...(raw.beverages as FullMenuCatalog['beverages']),
         }
       : defaults.beverages
-  return { greenMenu, page2, beverages }
+  return {
+    greenMenu,
+    page2,
+    beverages,
+    removedGreenItemIds,
+  }
 }
 
 export function saveFullMenuToStorage(catalog: FullMenuCatalog): void {

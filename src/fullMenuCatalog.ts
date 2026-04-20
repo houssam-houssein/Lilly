@@ -55,6 +55,8 @@ export type FullMenuCatalog = {
   greenMenu: MenuItem[]
   page2: Page2Catalog
   beverages: BeveragesCatalog
+  /** Default `MENU_ITEMS` ids the user removed; merge must not bring them back. */
+  removedGreenItemIds?: string[]
 }
 
 function cloneLines<T extends { id: string }>(rows: T[]): T[] {
@@ -71,6 +73,7 @@ function cloneSalads(rows: SaladLine[]): SaladLine[] {
 export function defaultFullMenuCatalog(): FullMenuCatalog {
   return {
     greenMenu: MENU_ITEMS.map((item) => ({ ...item })),
+    removedGreenItemIds: [],
     page2: {
       startersLeft: cloneLines(PAGE2_STARTERS_LEFT),
       startersRight: cloneLines(PAGE2_STARTERS_RIGHT),
