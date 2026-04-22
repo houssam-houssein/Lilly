@@ -179,6 +179,27 @@ body {
   }
 }
 
+/* Mobile edge-to-edge layout to maximize content width (helps S/M/L grids on Samsung). */
+@media (max-width: 48rem) {
+  .menu-page {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .menu-page-inner {
+    max-width: 100%;
+  }
+
+  .menu-jump-nav--pinned {
+    left: 0;
+    transform: none;
+    width: 100%;
+    border-radius: 0;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+}
+
 .menu-category--full {
   margin-top: 0.25rem;
 }
