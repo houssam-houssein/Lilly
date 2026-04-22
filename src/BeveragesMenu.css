@@ -76,6 +76,7 @@
   text-transform: uppercase;
   text-align: right;
   color: var(--lily-text);
+  white-space: nowrap;
 }
 
 .bev-grid-row {
@@ -98,6 +99,7 @@
   font-variant-numeric: tabular-nums;
   text-align: right;
   color: var(--lily-text);
+  white-space: nowrap;
 }
 
 .bev-price--empty {
@@ -190,5 +192,24 @@
   .bev-size-label,
   .bev-price {
     font-size: clamp(0.78rem, 3.5vw, 0.9rem);
+  }
+}
+
+/* Some Android devices apply larger text scaling; lock price columns to avoid overlap. */
+@media (max-width: 28rem) {
+  .bev-grid-head,
+  .bev-grid-row {
+    grid-template-columns: minmax(0, 1fr) repeat(3, minmax(3.8rem, auto));
+    column-gap: clamp(0.3rem, 1.2vw, 0.5rem);
+  }
+
+  .bev-grid--ml .bev-grid-head,
+  .bev-grid--ml .bev-grid-row {
+    grid-template-columns: minmax(0, 1fr) repeat(2, minmax(3.8rem, auto));
+  }
+
+  .bev-size-label,
+  .bev-price {
+    font-size: clamp(0.76rem, 2.8vw, 0.9rem);
   }
 }
