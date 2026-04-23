@@ -5,6 +5,7 @@ import {
   PAGE2_BOWL,
   PAGE2_BURGERS,
   PAGE2_FRENCH_TACOS,
+  PAGE2_CREPE,
   PAGE2_PIZZA,
   PAGE2_ROLLS_MEAL_UPGRADE_PRICE,
   PAGE2_ROLLS_MEAL_UPGRADE_SUBTEXT,
@@ -38,6 +39,7 @@ export type Page2Catalog = {
   pizza: DescLine[]
   burgers: DescLine[]
   frenchTacos: DescLine[]
+  crepe: DescLine[]
   rollsMealUpgradePrice: number
   rollsMealUpgradeSubtext: string
 }
@@ -86,6 +88,7 @@ export function defaultFullMenuCatalog(): FullMenuCatalog {
       pizza: cloneLines(PAGE2_PIZZA),
       burgers: cloneLines(PAGE2_BURGERS),
       frenchTacos: cloneLines(PAGE2_FRENCH_TACOS),
+      crepe: cloneLines(PAGE2_CREPE),
       rollsMealUpgradePrice: PAGE2_ROLLS_MEAL_UPGRADE_PRICE,
       rollsMealUpgradeSubtext: PAGE2_ROLLS_MEAL_UPGRADE_SUBTEXT,
     },

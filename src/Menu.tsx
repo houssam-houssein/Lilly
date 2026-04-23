@@ -416,6 +416,7 @@ export function BurgersFrenchTacosMenuPanel() {
   const {
     burgers,
     frenchTacos,
+    crepe,
     rollsMealUpgradePrice,
     rollsMealUpgradeSubtext,
   } = catalog.page2
@@ -473,6 +474,25 @@ export function BurgersFrenchTacosMenuPanel() {
             </p>
             <p className="p2-meal-upgrade-sub">{rollsMealUpgradeSubtext}</p>
           </div>
+        </section>
+
+        <section className="p2-section p2-section--crepe" aria-labelledby="p2-crepe">
+          <h2 id="p2-crepe" className="menu-category-title p2-section-title">
+            CREPE
+          </h2>
+          <ul className="menu-lines">
+            {crepe.map((item) => (
+              <li key={item.id} className="menu-line menu-line--baguette">
+                <div className="menu-line-baguette">
+                  <div className="menu-line-baguette-body">
+                    <span className="menu-line-name">{item.name}</span>
+                    <p className="menu-line-desc">{item.description}</p>
+                  </div>
+                  <span className="menu-line-price">{formatPrice(item.price)}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <footer className="p2-panel-footer">

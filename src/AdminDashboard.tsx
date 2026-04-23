@@ -205,7 +205,7 @@ function AdminSimpleSection({
         </table>
       </div>
       <button type="button" className="admin-btn admin-btn--mt" onClick={add}>
-        Add row
+        Add item
       </button>
     </section>
   )
@@ -417,7 +417,7 @@ function AdminDescSection({
         </table>
       </div>
       <button type="button" className="admin-btn admin-btn--mt" onClick={add}>
-        Add row
+        Add item
       </button>
     </section>
   )
@@ -717,7 +717,7 @@ function AdminBevSection({
         </table>
       </div>
       <button type="button" className="admin-btn admin-btn--mt" onClick={add}>
-        Add row
+        Add item
       </button>
     </section>
   )
@@ -788,6 +788,7 @@ export function AdminDashboard() {
       { id: 'p2:pizza', label: 'PIZZA' },
       { id: 'p2:burgers', label: 'BURGERS' },
       { id: 'p2:french-tacos', label: 'FRENCH TACOS' },
+      { id: 'p2:crepe', label: 'CREPE' },
       { id: 'bev:black-coffee', label: 'BLACK COFFEE' },
       { id: 'bev:hot', label: 'HOT BEVERAGES' },
       { id: 'bev:blended', label: 'BLENDED DRINKS' },
@@ -1189,6 +1190,17 @@ export function AdminDashboard() {
                 />
               </label>
             </div>
+          </div>
+        ) : null}
+
+        {tab === 'p2:crepe' ? (
+          <div className="admin-tab-panel">
+            <AdminDescSection
+              title="Crepe"
+              rows={p2.crepe}
+              onChange={(rows) => setPage2((p) => ({ ...p, crepe: rows }))}
+              requestDelete={requestDelete}
+            />
           </div>
         ) : null}
 

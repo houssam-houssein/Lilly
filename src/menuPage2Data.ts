@@ -275,3 +275,18 @@ export const PAGE2_FRENCH_TACOS: DescLine[] = [
       'Seasoned ground beef, fries, creamy cheese sauce, and cocktail sauce wrapped in toasted tortilla.',
   },
 ]
+
+export const PAGE2_CREPE: DescLine[] = [
+  {
+    id: 'crepe-choco',
+    name: 'Chocolate',
+    price: 350_000,
+    description: 'Soft crepe filled with rich chocolate spread.',
+  },
+  {
+    id: 'crepe-choco-banana',
+    name: 'Chocolate Banana',
+    price: 420_000,
+    description: 'Soft crepe filled with chocolate spread and fresh banana slices.',
+  },
+]

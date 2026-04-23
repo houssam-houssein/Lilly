@@ -53,6 +53,7 @@ export function App() {
       { id: 'pizza', label: 'PIZZA', targetId: 'p2-pizza' },
       { id: 'burgers', label: 'BURGERS', targetId: 'p2-burgers' },
       { id: 'tacos', label: 'FRENCH TACOS', targetId: 'p2-french-tacos' },
+      { id: 'crepe', label: 'CREPE', targetId: 'p2-crepe' },
       { id: 'black-coffee', label: 'BLACK COFFEE', targetId: 'bev-black-coffee' },
       { id: 'hot', label: 'HOT BEVERAGES', targetId: 'bev-hot' },
       { id: 'tea', label: 'TEA', targetId: 'cat-TEA' },
