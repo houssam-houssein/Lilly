@@ -99,13 +99,18 @@ function normalizeFullCatalog(raw: Record<string, unknown>): FullMenuCatalog {
   const greenMenu = renameLegacyGreenCategories(
     mergeMissingGreenItemsFromDefaults(greenMenuRaw, removedSet)
   )
-  const page2 =
+  const page2Raw =
     raw.page2 && typeof raw.page2 === 'object'
       ? {
           ...defaults.page2,
           ...(raw.page2 as FullMenuCatalog['page2']),
         }
       : defaults.page2
+  const page2 = {
+    ...page2Raw,
+    // Ensure newly added sections survive older/malformed saved catalogs.
+    crepe: Array.isArray(page2Raw.crepe) ? page2Raw.crepe : defaults.page2.crepe,
+  }
   const beverages =
     raw.beverages && typeof raw.beverages === 'object'
       ? {
