@@ -1,0 +1,80 @@
+.menu-intro-header {
+  text-align: center;
+  max-width: none;
+  padding: clamp(2.25rem, 6vw, 4rem) clamp(1rem, 3vw, 1.5rem)
+    clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--page-bg);
+}
+
+.menu-intro-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.65rem, 2vw, 1.1rem);
+  margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
+  font-family: var(--font-ui);
+  font-size: clamp(0.6rem, 1.5vw, 0.72rem);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #1a1a1a 70%, transparent);
+}
+
+.menu-intro-eyebrow-line {
+  flex: 0 1 3.5rem;
+  width: 3.5rem;
+  height: 1px;
+  background: color-mix(in srgb, #1a1a1a 35%, transparent);
+}
+
+.menu-intro-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.15rem, 0.5vw, 0.35rem);
+  margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 0.95;
+}
+
+.menu-intro-title-line {
+  font-family: var(--font-ui);
+  font-size: clamp(2.4rem, 8vw, 4.5rem);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+.menu-intro-care {
+  font-family: var(--font-logo);
+  font-size: 1.12em;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: lowercase;
+  color: #6b2d2d;
+}
+
+.menu-intro-header .menu-jump-nav {
+  margin-top: 0;
+  padding-bottom: 0.15rem;
+}
+
+@media (min-width: 48.01rem) {
+  .menu-intro-header .menu-jump-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 48rem) {
+  .menu-intro-header {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

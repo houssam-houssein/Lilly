@@ -98,8 +98,9 @@ function BeverageSimpleSection({
       <ul className="bev-simple-list">
         {rows.map((row) => (
           <li key={row.id} className="bev-simple-line">
-            <p className="bev-simple-name">{row.name}</p>
-            <p className="bev-simple-price">{formatPrice(row.price)}</p>
+            <span className="bev-simple-name">{row.name}</span>
+            <span className="bev-simple-leader" aria-hidden="true" />
+            <span className="bev-simple-price">{formatPrice(row.price)}</span>
           </li>
         ))}
       </ul>
@@ -107,16 +108,6 @@ function BeverageSimpleSection({
   )
 }
 
-function BevPanelFooter() {
-  return (
-    <footer className="bev-panel-footer">
-      <p className="menu-vat-notice">All prices inc. VAT</p>
-      <div className="menu-stripe-bar" aria-hidden="true" />
-    </footer>
-  )
-}
-
-/** Green card: black coffee + hot beverages (S/M/L). */
 export function BeveragesCoffeeHotPanel() {
   const { catalog } = useMenuCatalogContext()
   const { blackCoffee, hot } = catalog.beverages
@@ -131,13 +122,11 @@ export function BeveragesCoffeeHotPanel() {
           columns="sml"
         />
         <BeverageSection sectionId="bev-hot" title="Hot beverages" rows={hot} columns="sml" />
-        <BevPanelFooter />
       </main>
     </div>
   )
 }
 
-/** Green card: blended drinks + iced beverages (M/L). */
 export function BeveragesBlendedIcedPanel() {
   const { catalog } = useMenuCatalogContext()
   const { blended, iced } = catalog.beverages
@@ -155,13 +144,11 @@ export function BeveragesBlendedIcedPanel() {
           columns="ml"
         />
         <BeverageSection sectionId="bev-iced" title="Iced beverages" rows={iced} columns="ml" />
-        <BevPanelFooter />
       </main>
     </div>
   )
 }
 
-/** Green card: bottled drinks + nargileh (single price per line). */
 export function BeveragesDrinksNargilehPanel() {
   const { catalog } = useMenuCatalogContext()
   const { drinks, nargileh } = catalog.beverages
@@ -171,7 +158,6 @@ export function BeveragesDrinksNargilehPanel() {
       <main className="menu-body bev-body">
         <BeverageSimpleSection sectionId="bev-drinks" title="Drinks" rows={drinks} />
         <BeverageSimpleSection sectionId="bev-nargileh" title="Nargileh" rows={nargileh} />
-        <BevPanelFooter />
       </main>
     </div>
   )

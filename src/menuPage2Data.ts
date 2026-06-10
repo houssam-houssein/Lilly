@@ -8,8 +8,6 @@ export const PAGE2_STARTERS_LEFT: SimpleLine[] = [
 ]
 
 export const PAGE2_STARTERS_RIGHT: SimpleLine[] = [
-  { id: 'w6', name: 'Chicken Wings (6 pcs)', price: 400_000 },
-  { id: 'w10', name: 'Chicken Wings (10 pcs)', price: 520_000 },
   { id: 't3', name: 'Chicken Tenders (3 pcs)', price: 230_000 },
 ]
 

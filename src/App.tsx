@@ -5,6 +5,9 @@ import {
   BeveragesDrinksNargilehPanel,
 } from './BeveragesMenu'
 import { AdminDashboard } from './AdminDashboard'
+import { LandingPage } from './LandingPage'
+import { MenuIntroHeader } from './MenuIntroHeader'
+import { SiteFooter } from './SiteFooter'
 import {
   BurgersFrenchTacosMenuPanel,
   MainMenuPanel,
@@ -102,7 +105,7 @@ export function App() {
 
   useEffect(() => {
     const onScroll = () => {
-      const title = document.getElementById('menu-brand-title')
+      const title = document.getElementById('menu-section-title')
       if (!title) return
       const rect = title.getBoundingClientRect()
       setNavPinned(rect.bottom <= 0)
@@ -117,62 +120,65 @@ export function App() {
   }
 
   return (
-    <div className="menu-page menu-page--stacked">
-      <div id="panel-main" className="menu-page-inner">
-        <MainMenuPanel
-          headerAddon={
-            <nav
-              className={`menu-jump-nav${navPinned ? ' menu-jump-nav--pinned' : ''}`}
-              aria-label="Menu categories"
-            >
-              {categories.map((cat) => {
-                const activeId = firstCategoryForTarget(activeTarget)
-                const isActive = cat.id === activeId
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    className={`menu-jump-chip${isActive ? ' menu-jump-chip--active' : ''}`}
-                    onClick={() => {
-                      const target = document.getElementById(cat.targetId)
-                      if (!target) return
-                      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                    }}
-                  >
-                    {cat.label}
-                  </button>
-                )
-              })}
-            </nav>
-          }
-        />
-      </div>
-      <div id="panel-secondary" className="menu-page-inner menu-page-inner--spaced">
-        <SecondaryMenuPanel />
-      </div>
-      <div id="panel-wok-bowl" className="menu-page-inner menu-page-inner--spaced">
-        <WokNoodlesMenuPanel />
-      </div>
-      <div id="panel-rolls-pizza" className="menu-page-inner menu-page-inner--spaced">
-        <SignatureRollsPizzaMenuPanel />
-      </div>
-      <div id="panel-burgers-tacos" className="menu-page-inner menu-page-inner--spaced">
-        <BurgersFrenchTacosMenuPanel />
-      </div>
-      <div id="panel-coffee-hot" className="menu-page-inner menu-page-inner--spaced">
-        <BeveragesCoffeeHotPanel />
-      </div>
-      <div id="panel-blended-iced" className="menu-page-inner menu-page-inner--spaced">
-        <BeveragesBlendedIcedPanel />
-      </div>
-      <div id="panel-drinks-nargileh" className="menu-page-inner menu-page-inner--spaced">
-        <BeveragesDrinksNargilehPanel />
-      </div>
-      {showAdminEntry ? (
-        <div className="menu-admin-entry">
-          <a href="#/admin">Admin</a>
+    <>
+      <LandingPage />
+      <MenuIntroHeader>
+        <nav
+          className={`menu-jump-nav${navPinned ? ' menu-jump-nav--pinned' : ''}`}
+          aria-label="Menu categories"
+        >
+          {categories.map((cat) => {
+            const activeId = firstCategoryForTarget(activeTarget)
+            const isActive = cat.id === activeId
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                className={`menu-jump-chip${isActive ? ' menu-jump-chip--active' : ''}`}
+                onClick={() => {
+                  const target = document.getElementById(cat.targetId)
+                  if (!target) return
+                  target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }}
+              >
+                {cat.label}
+              </button>
+            )
+          })}
+        </nav>
+      </MenuIntroHeader>
+      <div className="menu-page menu-page--stacked">
+        <div id="panel-main" className="menu-page-inner">
+          <MainMenuPanel />
         </div>
-      ) : null}
-    </div>
+        <div id="panel-secondary" className="menu-page-inner menu-page-inner--spaced">
+          <SecondaryMenuPanel />
+        </div>
+        <div id="panel-wok-bowl" className="menu-page-inner menu-page-inner--spaced">
+          <WokNoodlesMenuPanel />
+        </div>
+        <div id="panel-rolls-pizza" className="menu-page-inner menu-page-inner--spaced">
+          <SignatureRollsPizzaMenuPanel />
+        </div>
+        <div id="panel-burgers-tacos" className="menu-page-inner menu-page-inner--spaced">
+          <BurgersFrenchTacosMenuPanel />
+        </div>
+        <div id="panel-coffee-hot" className="menu-page-inner menu-page-inner--spaced">
+          <BeveragesCoffeeHotPanel />
+        </div>
+        <div id="panel-blended-iced" className="menu-page-inner menu-page-inner--spaced">
+          <BeveragesBlendedIcedPanel />
+        </div>
+        <div id="panel-drinks-nargileh" className="menu-page-inner menu-page-inner--spaced">
+          <BeveragesDrinksNargilehPanel />
+        </div>
+        {showAdminEntry ? (
+          <div className="menu-admin-entry">
+            <a href="#/admin">Admin</a>
+          </div>
+        ) : null}
+      </div>
+      <SiteFooter />
+    </>
   )
 }

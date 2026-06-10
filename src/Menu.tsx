@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react'
 import type { MenuItem } from './types'
 import { formatPrice } from './formatPrice'
+import { MenuLineMain } from './MenuLineMain'
 import { useMenuCatalog, useMenuCatalogContext } from './MenuCatalogContext'
 
 /** Top row: MANAKISH | SAJ; row below: KAEKE (match `category` on items, case-insensitive). */
@@ -37,10 +37,8 @@ function minSortOrder(items: MenuItem[]): number {
   return Math.min(...items.map((i) => i.sortOrder))
 }
 
-const restaurantName = import.meta.env.VITE_RESTAURANT_NAME?.trim() || 'LILY'
-
-/** Green card: LILY + first part of the menu (stacked with burgundy card below). */
-export function MainMenuPanel({ headerAddon }: { headerAddon?: ReactNode }) {
+/** Green card: first part of the menu (stacked with burgundy card below). */
+export function MainMenuPanel() {
   const menu = useMenuCatalog()
 
   const pairKeys = TOP_PAIR_CATEGORY_LABELS.map((label) =>
@@ -68,13 +66,6 @@ export function MainMenuPanel({ headerAddon }: { headerAddon?: ReactNode }) {
 
   return (
     <div className="menu-panel menu-panel--main">
-      <header className="menu-header">
-        <h1 id="menu-brand-title" className="brand">
-          {restaurantName}
-        </h1>
-        {headerAddon}
-      </header>
-
       <main className="menu-body">
         {pairKeys.length > 0 ? (
           <div className="menu-top-columns menu-top-columns--pair">
@@ -146,39 +137,19 @@ function CategoryBlock({ categoryKey, items, variant }: CategoryBlockProps) {
         {categoryKey.toUpperCase()}
       </h2>
       <ul className="menu-lines">
-        {items.map((item) =>
-          isBaguette ? (
-            <li key={item.id} className="menu-line menu-line--baguette">
-              <div className="menu-line-baguette">
-                <div className="menu-line-baguette-body">
-                  <span className="menu-line-name">{item.name}</span>
-                  {item.description ? (
-                    <p className="menu-line-desc">{item.description}</p>
-                  ) : null}
-                </div>
-                <span className="menu-line-price">{formatPrice(item.price)}</span>
-              </div>
-            </li>
-          ) : (
-            <li key={item.id} className="menu-line">
-              <div className="menu-line-main">
-                <span className="menu-line-name">{item.name}</span>
-                <span className="menu-line-price">{formatPrice(item.price)}</span>
-              </div>
-              {item.description ? (
-                <p className="menu-line-desc">{item.description}</p>
-              ) : null}
-            </li>
-          )
-        )}
+        {items.map((item) => (
+          <li
+            key={item.id}
+            className={`menu-line${isBaguette || item.description ? ' menu-line--desc' : ''}`}
+          >
+            <MenuLineMain name={item.name} price={item.price} />
+            {item.description ? (
+              <p className="menu-line-desc">{item.description}</p>
+            ) : null}
+          </li>
+        ))}
       </ul>
       {footer ? <p className="menu-category-footnote">{footer}</p> : null}
-      {isBaguette ? (
-        <>
-          <p className="menu-vat-notice">All prices inc. VAT</p>
-          <div className="menu-stripe-bar" aria-hidden="true" />
-        </>
-      ) : null}
     </section>
   )
 }
@@ -206,10 +177,7 @@ export function SecondaryMenuPanel() {
             <ul className="menu-lines">
               {startersLeft.map((row) => (
                 <li key={row.id} className="menu-line">
-                  <div className="menu-line-main">
-                    <span className="menu-line-name">{row.name}</span>
-                    <span className="menu-line-price">{formatPrice(row.price)}</span>
-                  </div>
+                  <MenuLineMain name={row.name} price={row.price} />
                 </li>
               ))}
             </ul>
@@ -217,10 +185,7 @@ export function SecondaryMenuPanel() {
               <ul className="menu-lines">
                 {startersRight.map((row) => (
                   <li key={row.id} className="menu-line">
-                    <div className="menu-line-main">
-                      <span className="menu-line-name">{row.name}</span>
-                      <span className="menu-line-price">{formatPrice(row.price)}</span>
-                    </div>
+                    <MenuLineMain name={row.name} price={row.price} />
                   </li>
                 ))}
               </ul>
@@ -235,14 +200,9 @@ export function SecondaryMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {sharing.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
@@ -254,14 +214,9 @@ export function SecondaryMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {salads.map((item) => (
-              <li key={item.id} className="p2-salad-entry menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="p2-salad-entry menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
@@ -279,10 +234,6 @@ export function SecondaryMenuPanel() {
           ) : null}
         </section>
 
-        <footer className="p2-panel-footer">
-          <p className="menu-vat-notice">All prices inc. VAT</p>
-          <div className="menu-stripe-bar" aria-hidden="true" />
-        </footer>
       </main>
     </div>
   )
@@ -302,14 +253,9 @@ export function WokNoodlesMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {wok.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
@@ -321,23 +267,14 @@ export function WokNoodlesMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {bowl.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
         </section>
 
-        <footer className="p2-panel-footer">
-          <p className="menu-vat-notice">All prices inc. VAT</p>
-          <div className="menu-stripe-bar" aria-hidden="true" />
-        </footer>
       </main>
     </div>
   )
@@ -362,14 +299,9 @@ export function SignatureRollsPizzaMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {signatureRolls.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
@@ -388,23 +320,14 @@ export function SignatureRollsPizzaMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {pizza.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
         </section>
 
-        <footer className="p2-panel-footer">
-          <p className="menu-vat-notice">All prices inc. VAT</p>
-          <div className="menu-stripe-bar" aria-hidden="true" />
-        </footer>
       </main>
     </div>
   )
@@ -430,14 +353,9 @@ export function BurgersFrenchTacosMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {burgers.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
@@ -456,14 +374,9 @@ export function BurgersFrenchTacosMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {frenchTacos.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
@@ -482,23 +395,14 @@ export function BurgersFrenchTacosMenuPanel() {
           </h2>
           <ul className="menu-lines">
             {crepe.map((item) => (
-              <li key={item.id} className="menu-line menu-line--baguette">
-                <div className="menu-line-baguette">
-                  <div className="menu-line-baguette-body">
-                    <span className="menu-line-name">{item.name}</span>
-                    <p className="menu-line-desc">{item.description}</p>
-                  </div>
-                  <span className="menu-line-price">{formatPrice(item.price)}</span>
-                </div>
+              <li key={item.id} className="menu-line menu-line--desc">
+                <MenuLineMain name={item.name} price={item.price} />
+                <p className="menu-line-desc">{item.description}</p>
               </li>
             ))}
           </ul>
         </section>
 
-        <footer className="p2-panel-footer">
-          <p className="menu-vat-notice">All prices inc. VAT</p>
-          <div className="menu-stripe-bar" aria-hidden="true" />
-        </footer>
       </main>
     </div>
   )

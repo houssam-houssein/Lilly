@@ -1,8 +1,70 @@
+import type { BeverageRow, BevSimpleLine } from './beveragesMenuData'
 import type { MenuItem } from './types'
 import {
   defaultFullMenuCatalog,
   type FullMenuCatalog,
 } from './fullMenuCatalog'
+
+const REMOVED_PAGE2_ITEM_IDS = new Set(['w6', 'w10'])
+
+type LegacyBeverageRow = {
+  id: string
+  name: string
+  price?: number
+  small?: number
+  medium?: number
+  large?: number
+}
+
+function hasSizedPrices(row: LegacyBeverageRow): boolean {
+  return (
+    typeof row.small === 'number' ||
+    typeof row.medium === 'number' ||
+    typeof row.large === 'number'
+  )
+}
+
+function normalizeSizedBeverageRows(
+  rows: unknown,
+  fallback: BeverageRow[]
+): BeverageRow[] {
+  if (!Array.isArray(rows)) return fallback
+  return rows.map((row) => {
+    const legacy = row as LegacyBeverageRow
+    if (hasSizedPrices(legacy)) {
+      return {
+        id: legacy.id,
+        name: legacy.name,
+        small: legacy.small,
+        medium: legacy.medium,
+        large: legacy.large,
+      }
+    }
+    if (typeof legacy.price === 'number') {
+      return { id: legacy.id, name: legacy.name, medium: legacy.price }
+    }
+    return { id: legacy.id, name: legacy.name }
+  })
+}
+
+function normalizeSimpleBeverageRows(
+  rows: unknown,
+  fallback: BevSimpleLine[]
+): BevSimpleLine[] {
+  if (!Array.isArray(rows)) return fallback
+  return rows.map((row) => {
+    const legacy = row as LegacyBeverageRow
+    const price =
+      typeof legacy.price === 'number'
+        ? legacy.price
+        : legacy.medium ?? legacy.small ?? legacy.large ?? 0
+    return { id: legacy.id, name: legacy.name, price }
+  })
+}
+
+function filterRemovedPage2Items<T extends { id: string }>(rows: T[]): T[] {
+  return rows.filter((row) => !REMOVED_PAGE2_ITEM_IDS.has(row.id))
+}
 
 const LEGACY_GREEN_KEY = 'lily-menu-catalog-v1'
 export const FULL_MENU_STORAGE_KEY = 'lily-full-menu-v2'
@@ -108,16 +170,38 @@ function normalizeFullCatalog(raw: Record<string, unknown>): FullMenuCatalog {
       : defaults.page2
   const page2 = {
     ...page2Raw,
+    startersRight: filterRemovedPage2Items(
+      Array.isArray(page2Raw.startersRight)
+        ? page2Raw.startersRight
+        : defaults.page2.startersRight
+    ),
     // Ensure newly added sections survive older/malformed saved catalogs.
     crepe: Array.isArray(page2Raw.crepe) ? page2Raw.crepe : defaults.page2.crepe,
   }
-  const beverages =
+  const beveragesRaw =
     raw.beverages && typeof raw.beverages === 'object'
-      ? {
-          ...defaults.beverages,
-          ...(raw.beverages as FullMenuCatalog['beverages']),
-        }
+      ? (raw.beverages as FullMenuCatalog['beverages'])
       : defaults.beverages
+  const beverages = {
+    blackCoffee: normalizeSizedBeverageRows(
+      beveragesRaw.blackCoffee,
+      defaults.beverages.blackCoffee
+    ),
+    hot: normalizeSizedBeverageRows(beveragesRaw.hot, defaults.beverages.hot),
+    blended: normalizeSizedBeverageRows(
+      beveragesRaw.blended,
+      defaults.beverages.blended
+    ),
+    iced: normalizeSizedBeverageRows(beveragesRaw.iced, defaults.beverages.iced),
+    drinks: normalizeSimpleBeverageRows(
+      beveragesRaw.drinks,
+      defaults.beverages.drinks
+    ),
+    nargileh: normalizeSimpleBeverageRows(
+      beveragesRaw.nargileh,
+      defaults.beverages.nargileh
+    ),
+  }
   return {
     greenMenu,
     page2,

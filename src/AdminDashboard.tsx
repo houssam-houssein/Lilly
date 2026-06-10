@@ -5,8 +5,8 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type { BeverageRow } from './beveragesMenuData'
 import type { DescLine, SaladLine, SimpleLine } from './menuPage2Data'
+import type { BeverageRow } from './beveragesMenuData'
 import {
   ensureFirebaseWriteSession,
 } from './firebaseMenu'
