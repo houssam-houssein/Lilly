@@ -1,12 +1,16 @@
 import './LandingPage.css'
-import homepageImage from './assets/homepage.png'
+
+const HERO_IMAGE = `${import.meta.env.BASE_URL}hero.webp`
 
 export function LandingPage() {
   return (
     <section className="landing-page" aria-label="Welcome to Lily Cafe and Kitchen">
-      <div
+      <img
         className="landing-page__bg"
-        style={{ backgroundImage: `url(${homepageImage})` }}
+        src={HERO_IMAGE}
+        alt=""
+        fetchPriority="high"
+        decoding="async"
         aria-hidden="true"
       />
       <div className="landing-page__overlay" aria-hidden="true" />
