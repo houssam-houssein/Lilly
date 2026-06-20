@@ -783,7 +783,7 @@ export function AdminDashboard() {
       { id: 'p2:sharing', label: 'SHARING' },
       { id: 'p2:salads', label: 'SALADS' },
       { id: 'p2:wok', label: 'WOK NOODLES' },
-      { id: 'p2:bowl', label: 'BOWL' },
+      { id: 'p2:bowl', label: 'PLATTERS' },
       { id: 'p2:signature-rolls', label: 'SIGNATURE ROLLS' },
       { id: 'p2:pizza', label: 'PIZZA' },
       { id: 'p2:burgers', label: 'BURGERS' },
@@ -1041,7 +1041,7 @@ export function AdminDashboard() {
         {tab === 'p2:bowl' ? (
           <div className="admin-tab-panel">
             <AdminDescSection
-              title="Bowl"
+              title="Platters"
               rows={p2.bowl}
               onChange={(rows) => setPage2((p) => ({ ...p, bowl: rows }))}
               requestDelete={requestDelete}

@@ -263,7 +263,7 @@ export function WokNoodlesMenuPanel() {
 
         <section className="p2-section p2-section--bowl" aria-labelledby="p2-bowl">
           <h2 id="p2-bowl" className="menu-category-title p2-section-title">
-            BOWL
+            PLATTERS
           </h2>
           <ul className="menu-lines">
             {bowl.map((item) => (

@@ -51,7 +51,7 @@ export function App() {
       { id: 'sharing', label: 'SHARING', targetId: 'p2-sharing' },
       { id: 'salads', label: 'SALADS', targetId: 'p2-salads' },
       { id: 'wok', label: 'WOK NOODLES', targetId: 'p2-wok-noodles' },
-      { id: 'bowl', label: 'BOWL', targetId: 'p2-bowl' },
+      { id: 'bowl', label: 'PLATTERS', targetId: 'p2-bowl' },
       { id: 'rolls', label: 'SIGNATURE ROLLS', targetId: 'p2-signature-rolls' },
       { id: 'pizza', label: 'PIZZA', targetId: 'p2-pizza' },
       { id: 'burgers', label: 'BURGERS', targetId: 'p2-burgers' },
